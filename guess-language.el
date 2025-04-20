@@ -88,6 +88,11 @@ variable will replace the minor mode lighter. By default it's
 set to `default'."
   :type '(choice (string) (const nil)))
 
+(defcustom guess-language-issue-message-flag t
+  "If non-nil, guess-language will emit a message every time a
+new language is detected."
+  :type 'boolean)
+
 (defvar guess-language--regexps nil
   "The regular expressions that are used to count trigrams.")
 
@@ -238,7 +243,8 @@ things like changing the keyboard layout or input method."
       (let ((lang (guess-language-region beginning end)))
         (run-hook-with-args 'guess-language-after-detection-functions lang beginning end)
         (setq guess-language-current-language lang)
-        (message (format "Detected language: %s" (nth 4 (assoc lang guess-language-langcodes))))))))
+        (when guess-language-issue-message-flag
+          (message (format "Detected language: %s" (nth 4 (assoc lang guess-language-langcodes)))))))))
 
 (defun guess-language-function (_beginning _end _doublon)
   "Wrapper for `guess-language' because `flyspell-incorrect-hook'
