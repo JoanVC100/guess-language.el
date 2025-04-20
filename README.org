@@ -48,7 +48,7 @@ Guess-language-mode is available through [[https://melpa.org/#/guess-language][M
 
 ~guess-language-min-paragraph-length~ specifies the minimal length that a paragraph needs to have before guess-language-mode starts guessing.  Based on some informal tests texts shorter than 30 characters are not enough to give good results.  However, above 40 characters the algorithm performs well.  Of course, these numbers depend on the target language (some are easier to detect than others) and on the (number of) candidate languages that are considered.  (Open the files in the directory ~testdata~ and do ~M-x guess-language-mark-lines~ to see for yourself.)
 
-~guess-language-mode-line-string~ sets the string that will be displayed if the dictionary being used is the default one (determined by Flyspell). The default value for this variable is ~"default"~.
+~guess-language-mode-line-string~ sets the string that will be displayed if the dictionary being used is the default one (determined by Flyspell). The default value for this variable is ~"default"~.  If you don't want to show the mode when no language could be detected, you can leave it as ~nil~.
 
 For each language, there is a default Ispell dictionary that guess-language-mode tries to use.  However, for some languages there are several dictionaries available and guess-language can’t know which one you’d like to use.  For example, there are several different dictionaries for German and for English.  If the dictionary that guess-language-mode uses by default is not present, you will get an error message like the following:
 

@@ -86,7 +86,7 @@ If guess-language can't determine the language of the text yet
 (usually because there are not enough characters), this
 variable will replace the minor mode lighter. By default it's
 set to `default'."
-  :type 'string)
+  :type '(choice (string) (const nil)))
 
 (defvar guess-language--regexps nil
   "The regular expressions that are used to count trigrams.")
@@ -298,6 +298,23 @@ during `flyspell-buffer'."
   (let ((flyspell-incorrect-hook nil))
     (apply orig-fun args)))
 
+
+(defun guess-language-mode-get-mode-line-string ()
+  "Return the string to be used in the lighter of the minor mode.
+
+It returns the correct string for the user-defined mode. If the
+language can't be determined and guess-language-mode-line-string
+is nil, it returns an empty string."
+  (let ((lighter-message
+          (or
+            (nth 3 (assq guess-language-current-language guess-language-langcodes))
+            ;; Options for users of old configurations:
+            (nth 2 (assq guess-language-current-language guess-language-langcodes))
+            (nth 1 (assq guess-language-current-language guess-language-langcodes))
+            guess-language-mode-line-string)))
+    (if lighter-message
+      (format " %s" lighter-message)
+      "")))
 ;;;###autoload
 (define-minor-mode guess-language-mode
   "Toggle guess-language mode.
@@ -318,12 +335,7 @@ correctly."
   ;; The initial value.
   :init-value nil
   ;; The indicator for the mode line.
-  :lighter (:eval (format " %s" (or
-                                 (nth 3 (assq guess-language-current-language guess-language-langcodes))
-                                 ;; Options for users of old configurations:
-                                 (nth 2 (assq guess-language-current-language guess-language-langcodes))
-                                 (nth 1 (assq guess-language-current-language guess-language-langcodes))
-                                 guess-language-mode-line-string)))
+  :lighter (:eval (guess-language-mode-get-mode-line-string))
   :global nil
   (if guess-language-mode
       (progn
