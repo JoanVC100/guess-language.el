@@ -79,6 +79,15 @@ guess-language doesn't do anything because there is likely too
 little material to reliably guess the language."
   :type 'integer)
 
+(defcustom guess-language-mode-line-string "default"
+  "Default string if the language can't be guessed.
+
+If guess-language can't determine the language of the text yet
+(usually because there are not enough characters), this
+variable will replace the minor mode lighter. By default it's
+set to `default'."
+  :type 'string)
+
 (defvar guess-language--regexps nil
   "The regular expressions that are used to count trigrams.")
 
@@ -314,7 +323,7 @@ correctly."
                                  ;; Options for users of old configurations:
                                  (nth 2 (assq guess-language-current-language guess-language-langcodes))
                                  (nth 1 (assq guess-language-current-language guess-language-langcodes))
-                                 "default")))
+                                 guess-language-mode-line-string)))
   :global nil
   (if guess-language-mode
       (progn
