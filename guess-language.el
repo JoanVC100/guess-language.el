@@ -232,8 +232,7 @@ things like changing the keyboard layout or input method."
     (when (> (- end beginning) guess-language-min-paragraph-length)
       (let ((lang (guess-language-region beginning end)))
         (run-hook-with-args 'guess-language-after-detection-functions lang beginning end)
-        (setq guess-language-current-language lang)
-        (message (format "Detected language: %s" (nth 4 (assoc lang guess-language-langcodes))))))))
+        (setq guess-language-current-language lang)))))
 
 (defun guess-language--idle-begin (buf win tick beginning)
   "Run guess-langauge unless we left or changed the current paragraph."
