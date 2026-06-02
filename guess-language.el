@@ -330,12 +330,18 @@ correctly."
   ;; The initial value.
   :init-value nil
   ;; The indicator for the mode line.
-  :lighter (:eval (format " %s" (or
-                                 (nth 3 (assq guess-language-current-language guess-language-langcodes))
-                                 ;; Options for users of old configurations:
-                                 (nth 2 (assq guess-language-current-language guess-language-langcodes))
-                                 (nth 1 (assq guess-language-current-language guess-language-langcodes))
-                                 "default")))
+  :lighter (:eval (format " %s"
+                   ;; Assume default language is the first in languages list
+                   (let* ((language-to-show (or
+                                             guess-language-current-language
+                                             (car guess-language-languages)))
+                          (entry (assq language-to-show guess-language-langcodes)))
+                     (or
+                      (nth 3 entry)
+                      ;; Options for users of old configurations:
+                      (nth 2 entry)
+                      (nth 1 entry)
+                      "No langs"))))
   :global nil
   (if guess-language-mode
       (progn
